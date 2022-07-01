@@ -1,0 +1,67 @@
+:root {
+  background: #f5f6fa;
+}
+
+body {
+  font-family: "Poppins";
+}
+
+h1 {
+  font-size: xx-large;
+}
+
+.header {
+  background-color: #3778f1;
+  padding: 30px 40px;
+  color: white;
+  text-align: center;
+}
+
+td {
+  margin: 0;
+  padding: 0;
+  width: 500px;
+}
+
+td {
+  position: relative;
+  padding: 12px 8px 12px 40px;
+  background: #eee;
+  font-size: 18px;
+  transition: 0.2s;
+}
+
+td:hover {
+  background: #ddd;
+}
+
+.nameTable {
+  text-align: center;
+}
+
+.nameBudget {
+  text-align: center;
+}
+
+.nameX .editButton {
+  right: 50px;
+}
+
+svg {
+  cursor: pointer;
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 45px;
+  width: 30px;
+}
+
+svg:hover {
+  color: white;
+}
+
+.header:after {
+  content: "";
+  display: table;
+  clear: both;
+} /*# sourceMappingURL=main.css.map */

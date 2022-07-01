@@ -5,9 +5,9 @@ exports.getAllEnvs = async (request, response) => {
 
   try {
     const envelopes = await db.query(query);
-    response.status(200).send({
+    response.status(200).render("main", {
       status: "success",
-      message: "retrieved envelopes",
+      message: "retrieved envelope",
       data: envelopes.rows,
     });
   } catch (error) {
@@ -35,12 +35,18 @@ exports.createEnv = async (request, response) => {
   }
 };
 
+exports.readCreatePage =
+  ("/create",
+  (req, res) => {
+    res.render("create");
+  });
+
 exports.getEnv = async (request, response) => {
   const query = "SELECT * FROM envelopes WHERE id = $1";
   const id = parseInt(request.params.id);
   try {
     const envelope = await db.query(query, [id]);
-    response.status(200).send({
+    response.status(200).render("envelope", {
       status: "success",
       message: "retrieved envelope",
       data: envelope.rows[0],
@@ -57,13 +63,16 @@ exports.updateEnv = async (request, response) => {
     "UPDATE envelopes SET name = $1, budget = $2 WHERE id = $3 RETURNING *";
   const id = parseInt(request.params.id);
   const { name, budget } = request.body;
+  console.log(request.body);
 
-  const envelope = await db.query(query, [name, budget, id]);
-  response.status(200).send({
-    status: "success",
-    message: "updated envelope",
-    data: envelope.rows[0],
-  });
+  try {
+    const envelope = await db.query(query, [name, budget, id]);
+    response.redirect("/api/v1/envelopes");
+  } catch (error) {
+    return response.status(500).send({
+      error: error.message,
+    });
+  }
 };
 
 exports.deleteEnv = async (request, response) => {
