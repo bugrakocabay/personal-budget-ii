@@ -25,6 +25,8 @@ app.use("/envelopes", envRouter);
 app.use("/transactions", transactionRouter);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.listen(4000, () => {
-  console.log("App running on port 4000!");
+const port = process.env.PORT || 4000;
+
+app.listen(port, () => {
+  console.log("App running...");
 });
