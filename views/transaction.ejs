@@ -17,42 +17,32 @@
       integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
       crossorigin="anonymous"
     ></script>
-    <title>Bütçe</title>
+    <title>Harcama oluştur</title>
   </head>
   <body>
     <div id="myDIV" class="header">
       <h1>Personal Budget</h1>
     </div>
     <div class="container">
-      <div class="envelope">
-        <h4>Envelope name: <%= data.name%></h4>
-        <h4>Envelope budget: <%= data.budget%></h4>
+      <div class="header1">
+        <h3>Harcama Ekle</h2>
+      </div>
+      <div class="tableddiv">
+        <form action="/envelopes/<%= data.id%>/transactions" method="post">
+          <label for="name">Harcama ismi:</label><br />
+          <input type="text" id="title" name="title" /><br />
+          <label for="budget">Harcama miktarı:</label><br />
+          <input type="text" id="amount" name="amount" />
+          <button type="submit" class="btn btn--primary btn--inside uppercase">
+            Send
+          </button>
+        </form>
       </div>
     </div>
-    <div class="buttondiv">
-      <a href="/envelopes"
+    <a href="/envelopes/<%= data.id%>"
         ><img
           class="buttonpng"
           src="https://img.icons8.com/windows/96/000000/left.png"
       /></a>
-    </div>
-    <div class="transactiontable">
-      <table style="margin: auto">
-        <tbody>
-          <h3 class="harcamalar">Harcamalar <span><a href="/envelopes/<%= data.id%>/transactions"><img class="plus" src="../assets/images/plus.png" alt=""></a></span></h5>
-            
-          <% if(transdata.length){ for(var i = 0; i< transdata.length; i++) {%>
-          <tr>
-            <td class="transactiontitle"><%= transdata[i].title%></td>
-            <td class="transactionamount"><%= transdata[i].amount%></td>
-          </tr>
-          <% } }else{ %>
-          <tr>
-            <td colspan="3">Harcama yok</td>
-          </tr>
-          <% } %>
-        </tbody>
-      </table>
-    </div>
   </body>
 </html>

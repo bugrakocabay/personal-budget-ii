@@ -24,11 +24,21 @@
       <h1>Personal Budget</h1>
     </div>
     <div class="container">
-      <form action="/envelopes/create" method="post">
-        <label for="name">Envelope Name:</label><br />
-        <input type="text" id="name" name="name" /><br />
-        <label for="budget">Envelope Budget:</label><br />
-        <input type="text" id="budget" name="budget" />
+      <form action="/envelopes/<%= data.id%>/edit" method="post">
+        <label for="name">Edit Envelope Name:</label><br />
+        <input
+          type="text"
+          id="name"
+          name="name"
+          value="<%= data.name%>"
+        /><br />
+        <label for="budget">Edit Envelope Budget:</label><br />
+        <input
+          type="text"
+          id="budget"
+          name="budget"
+          value="<%= data.budget%>"
+        />
         <button type="submit" class="btn btn--primary btn--inside uppercase">
           Send
         </button>

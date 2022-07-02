@@ -1,5 +1,9 @@
+* {
+  box-sizing: border-box;
+}
+
 :root {
-  background: #f5f6fa;
+  background: #eeeeee;
 }
 
 body {
@@ -10,9 +14,28 @@ h1 {
   font-size: xx-large;
 }
 
+.myTable {
+  background-color: #dff6ff;
+}
+.asd123 {
+  text-decoration: none;
+}
+
+.createbutton {
+  background-color: #00adb5;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 15px;
+  min-height: 30px;
+  min-width: 120px;
+  left: 30px;
+  cursor: pointer;
+}
+
 .header {
-  background-color: #3778f1;
-  padding: 30px 40px;
+  background-color: #222831;
+  padding: 30px 50px;
   color: white;
   text-align: center;
 }
@@ -26,13 +49,12 @@ td {
 td {
   position: relative;
   padding: 12px 8px 12px 40px;
-  background: #eee;
   font-size: 18px;
   transition: 0.2s;
 }
 
 td:hover {
-  background: #ddd;
+  background: #47b5ff;
 }
 
 .nameTable {

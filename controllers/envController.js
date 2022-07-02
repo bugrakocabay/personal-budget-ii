@@ -23,11 +23,7 @@ exports.createEnv = async (request, response) => {
   const { name, budget } = request.body;
   try {
     const envelope = await db.query(query, [name, budget]);
-    response.status(201).send({
-      status: "success",
-      message: "new envelope created!",
-      data: envelope.rows,
-    });
+    response.redirect("/envelopes");
   } catch (error) {
     return response.status(500).send({
       error: error.message,
@@ -35,26 +31,84 @@ exports.createEnv = async (request, response) => {
   }
 };
 
-exports.readCreatePage =
-  ("/create",
-  (req, res) => {
-    res.render("create");
-  });
+exports.readCreatePage = async (req, res) => {
+  try {
+    await res.status(200).render("create");
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-exports.getEnv = async (request, response) => {
+exports.readTransactionPage = async (req, res) => {
   const query = "SELECT * FROM envelopes WHERE id = $1";
-  const id = parseInt(request.params.id);
+  const id = parseInt(req.params.id);
   try {
     const envelope = await db.query(query, [id]);
-    response.status(200).render("envelope", {
+    res.status(200).render("transaction", {
       status: "success",
       message: "retrieved envelope",
       data: envelope.rows[0],
     });
   } catch (error) {
+    console.log(error);
+  }
+};
+
+exports.getEnv = async (request, response) => {
+  const query = "SELECT * FROM envelopes WHERE id = $1";
+  const transQuery = "SELECT * FROM transactions WHERE envelope_id = $1";
+  const id = parseInt(request.params.id);
+  try {
+    const envelope = await db.query(query, [id]);
+    const transactions = await db.query(transQuery, [id]);
+    console.log(transactions.rows);
+    response.status(200).render("envelope", {
+      status: "success",
+      message: "retrieved envelope",
+      data: envelope.rows[0],
+      transdata: transactions.rows,
+    });
+  } catch (error) {
     return response.status(500).send({
       error: error.message,
     });
+  }
+};
+exports.getEnvelopeTransactions = async (req, res) => {
+  const query = "SELECT * FROM transactions WHERE envelope_id = $1";
+  const { id } = req.params;
+
+  try {
+    const transactions = await db.query(query, [id]);
+    if (transactions.rows < 1) {
+      return res.status(404).send({
+        message: "No envelope information found",
+      });
+    }
+    res.status(200).send({
+      status: "Success",
+      message: "Transactions information retrieved",
+      transdata: transactions.rows,
+    });
+  } catch (err) {
+    res.status(500).send({
+      error: err.message,
+    });
+  }
+};
+
+exports.updatePage = async (req, res) => {
+  const query = "SELECT * FROM envelopes WHERE id = $1";
+  const id = parseInt(req.params.id);
+  try {
+    const envelope = await db.query(query, [id]);
+    res.status(200).render("edit", {
+      status: "success",
+      message: "retrieved envelope",
+      data: envelope.rows[0],
+    });
+  } catch (error) {
+    console.log(error);
   }
 };
 
@@ -67,7 +121,7 @@ exports.updateEnv = async (request, response) => {
 
   try {
     const envelope = await db.query(query, [name, budget, id]);
-    response.redirect("/api/v1/envelopes");
+    response.redirect("/envelopes");
   } catch (error) {
     return response.status(500).send({
       error: error.message,
@@ -79,10 +133,7 @@ exports.deleteEnv = async (request, response) => {
   const query = "DELETE FROM envelopes WHERE id = $1";
   const id = parseInt(request.params.id);
   await db.query(query, [id]);
-  response.status(200).send({
-    status: "success",
-    message: "deleted envelope",
-  });
+  response.redirect("/envelopes");
 };
 
 exports.createEnvTransaction = async (request, response) => {
@@ -106,38 +157,11 @@ exports.createEnvTransaction = async (request, response) => {
     ]);
     await db.query(updateEnvQuery, [amount, id]);
     await db.query("COMMIT");
-    response.status(201).send({
-      status: "success",
-      message: "created transaction",
-      data: newTransaction.rows[0],
-    });
+    response.redirect(`/envelopes/${id}`);
   } catch (error) {
     await db.query("ROLLBACK");
     return response.status(500).send({
       error: error.message,
-    });
-  }
-};
-
-exports.getEnvelopeTransactions = async (req, res) => {
-  const query = "SELECT * FROM transactions WHERE envelope_id = $1";
-  const { id } = req.params;
-
-  try {
-    const transactions = await db.query(query, [id]);
-    if (transactions.rows < 1) {
-      return res.status(404).send({
-        message: "No envelope information found",
-      });
-    }
-    res.status(200).send({
-      status: "Success",
-      message: "Transactions information retrieved",
-      data: transactions.rows,
-    });
-  } catch (err) {
-    res.status(500).send({
-      error: err.message,
     });
   }
 };

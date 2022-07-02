@@ -21,8 +21,8 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
 app.use(express.static(__dirname));
-app.use("/api/v1/envelopes", envRouter);
-app.use("/api/v1/transactions", transactionRouter);
+app.use("/envelopes", envRouter);
+app.use("/transactions", transactionRouter);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.listen(4000, () => {
