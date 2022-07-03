@@ -21,6 +21,7 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
 app.use(express.static(__dirname));
+app.get("/", (req, res) => res.redirect("/envelopes"));
 app.use("/envelopes", envRouter);
 app.use("/transactions", transactionRouter);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));

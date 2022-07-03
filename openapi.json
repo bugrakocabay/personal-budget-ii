@@ -6,7 +6,7 @@
     "description": "An api that helps keeping a personal budget using envelope method."
   },
   "paths": {
-    "/api/v1/envelopes": {
+    "/envelopes": {
       "summary": "Envelopes data.",
       "description": "This path is used to retrieve and create envelopes.",
       "get": {
@@ -27,9 +27,7 @@
             }
           }
         },
-        "tags": [
-          "Envelopes"
-        ]
+        "tags": ["Envelopes"]
       },
       "post": {
         "summary": "Create envelope",
@@ -59,12 +57,10 @@
             }
           }
         },
-        "tags": [
-          "New Envelope"
-        ]
+        "tags": ["New Envelope"]
       }
     },
-    "/api/v1/envelopes/{id}": {
+    "/envelopes/{id}": {
       "summary": "Get single envelope data.",
       "description": "This path is used to retrieve a single envelope data from database.",
       "get": {
@@ -96,9 +92,7 @@
             }
           }
         },
-        "tags": [
-          "Single Envelope"
-        ]
+        "tags": ["Single Envelope"]
       },
       "put": {
         "summary": "Update an envelope.",
@@ -139,9 +133,7 @@
             }
           }
         },
-        "tags": [
-          "Update Envelope"
-        ]
+        "tags": ["Update Envelope"]
       },
       "delete": {
         "summary": "Delete envelope",
@@ -172,12 +164,10 @@
             }
           }
         },
-        "tags": [
-          "Delete Envelope"
-        ]
+        "tags": ["Delete Envelope"]
       }
     },
-    "/api/v1/envelopes/{id}/transactions": {
+    "/envelopes/{id}/transactions": {
       "summary": "Get envelope transactions.",
       "description": "This pah is used to retrieve transactions of an envelope.",
       "get": {
@@ -209,9 +199,7 @@
             }
           }
         },
-        "tags": [
-          "Get Envelope Transactions"
-        ]
+        "tags": ["Get Envelope Transactions"]
       },
       "post": {
         "summary": "Create transaction",
@@ -252,12 +240,10 @@
             }
           }
         },
-        "tags": [
-          "Create Transaction"
-        ]
+        "tags": ["Create Transaction"]
       }
     },
-    "/api/v1/transactions": {
+    "/transactions": {
       "summary": "Get all transactions data.",
       "description": "This path is used to retrieve all of the transactions data from database.",
       "get": {
@@ -278,12 +264,10 @@
             }
           }
         },
-        "tags": [
-          "Get All Transactions"
-        ]
+        "tags": ["Get All Transactions"]
       }
     },
-    "/api/v1/transactions/{id}": {
+    "/transactions/{id}": {
       "summary": "Get single transaction data.",
       "description": "This path is used to retrieve a single transaction data.",
       "put": {
@@ -315,9 +299,7 @@
             }
           }
         },
-        "tags": [
-          "Update Transaction"
-        ]
+        "tags": ["Update Transaction"]
       },
       "delete": {
         "summary": "Delete transaction",
@@ -339,9 +321,7 @@
             "description": "Default error sample response"
           }
         },
-        "tags": [
-          "Delete Transaction"
-        ]
+        "tags": ["Delete Transaction"]
       }
     }
   },
