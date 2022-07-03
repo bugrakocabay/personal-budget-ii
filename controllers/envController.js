@@ -61,7 +61,6 @@ exports.getEnv = async (request, response) => {
   try {
     const envelope = await db.query(query, [id]);
     const transactions = await db.query(transQuery, [id]);
-    console.log(transactions.rows);
     response.status(200).render("envelope", {
       status: "success",
       message: "retrieved envelope",
@@ -130,10 +129,17 @@ exports.updateEnv = async (request, response) => {
 };
 
 exports.deleteEnv = async (request, response) => {
+  const transactionQuery = "DELETE FROM transactions WHERE envelope_id = $1";
   const query = "DELETE FROM envelopes WHERE id = $1";
-  const id = parseInt(request.params.id);
-  await db.query(query, [id]);
-  response.redirect("/envelopes");
+
+  try {
+    const id = parseInt(request.params.id);
+    await db.query(transactionQuery, [id]);
+    await db.query(query, [id]);
+    response.redirect("/envelopes");
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 exports.createEnvTransaction = async (request, response) => {
