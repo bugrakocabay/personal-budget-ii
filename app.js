@@ -40,6 +40,7 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
 /// **** ROUTE HANDLERS ****
+app.get("/", (req, res) => res.redirect("/user/login"));
 app.use("/user", authRouter);
 app.use("/envelopes", envRouter);
 app.use("/transactions", transactionRouter);
