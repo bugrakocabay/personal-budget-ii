@@ -10,6 +10,8 @@ const session = require("express-session");
 const flash = require("express-flash");
 const passport = require("passport");
 const initializePassport = require("./config/passport");
+const { db } = require("./db/db");
+const pgSession = require("connect-pg-simple")(session);
 
 /// **** MIDDLEWARES ****
 initializePassport(passport);
@@ -26,6 +28,10 @@ app.use(
 );
 app.use(
   session({
+    store: new pgSession({
+      pool: db,
+      tableName: "session",
+    }),
     secret: "asdfqwerty",
     resave: false,
     saveUninitialized: false,
