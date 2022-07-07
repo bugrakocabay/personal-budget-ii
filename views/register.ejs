@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css"
+      integrity="sha512-EZLkOqwILORob+p0BXZc+Vm3RgJBOe1Iq/0fiI7r/wJgzOFZMlsqTa29UEl6v6U6gsV4uIpsNZoV32YZqrCRCQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container" {text-align: center;}>
+      <h1>Kayıt Ol</h1>
+
+      <ul>
+        <% if(typeof errors != 'undefined') { errors.forEach(error=> {%>
+        <li><%= error.message %></li>
+        <% }) } %>
+      </ul>
+
+      <form action="/user/register" method="post">
+        <div>
+          <input
+            type="text"
+            name="username"
+            id="username"
+            placeholder="Kullanıcı Adı"
+            required
+          />
+        </div>
+
+        <div>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            placeholder="Şifre"
+            required
+          />
+        </div>
+        <div>
+          <input
+            type="password"
+            name="password2"
+            id="password2"
+            placeholder="Şifre Tekrar"
+            required
+          />
+        </div>
+        <div>
+          <input type="submit" value="Kayıt" />
+        </div>
+        <a href="/user/login">Hesabın var mı? Buradan giriş yap</a>
+      </form>
+    </div>
+  </body>
+</html>

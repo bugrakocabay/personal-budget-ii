@@ -1,4 +1,5 @@
 const express = require("express");
+const { checkNotAuthenticated } = require("../controllers/authController");
 const {
   getAllEnvs,
   createEnv,
@@ -14,11 +15,19 @@ const {
 
 const router = express.Router();
 
-router.route("/:id/edit").get(updatePage).post(updateEnv);
-router.route("/:id/delete").get(deleteEnv);
-router.route("/create").get(readCreatePage).post(createEnv);
-router.route("/").get(getAllEnvs);
-router.route("/:id").get(getEnv, getEnvelopeTransactions);
+router
+  .route("/:id/edit")
+  .get(checkNotAuthenticated, updatePage)
+  .post(updateEnv);
+router.route("/:id/delete").get(checkNotAuthenticated, deleteEnv);
+router
+  .route("/create")
+  .get(checkNotAuthenticated, readCreatePage)
+  .post(createEnv);
+router.route("/").get(checkNotAuthenticated, getAllEnvs);
+router
+  .route("/:id")
+  .get(checkNotAuthenticated, getEnv, getEnvelopeTransactions);
 
 router
   .route("/:id/transactions")
