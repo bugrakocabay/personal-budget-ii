@@ -38,29 +38,32 @@ exports.logoutPage = (req, res) => {
 
 exports.registerUser = async (req, res) => {
   let { username, password, password2 } = req.body;
+  let usernameTrim = username.replace(/\s+/g, "");
+  let passwordTrim = password.replace(/\s+/g, "");
+  let password2Trim = password2.replace(/\s+/g, "");
 
   let errors = [];
 
   try {
-    if (!username || !password || !password2) {
+    if (!usernameTrim || !passwordTrim || !password2Trim) {
       errors.push({ messsage: "Lütfen tüm boşlukları doldurun" });
     }
 
-    if (password.length < 6) {
+    if (passwordTrim.length < 6) {
       errors.push({ messsage: "Şifre 6 karakterden fazla olmalı" });
     }
 
-    if (password != password2) {
+    if (passwordTrim != password2Trim) {
       errors.push({ messsage: "Şifreler uyuşmuyor" });
     }
 
     if (errors.length > 0) {
       res.render("register", { errors });
     } else {
-      let hashedPassword = await bcrypt.hash(password, 10);
+      let hashedPassword = await bcrypt.hash(passwordTrim, 10);
       let query = "SELECT * FROM users WHERE username = $1";
 
-      const results = await db.query(query, [username]);
+      const results = await db.query(query, [usernameTrim]);
 
       if (results.rows.length > 0) {
         errors.push({ message: "Kullanıcı adı kullanımda" });
@@ -70,7 +73,7 @@ exports.registerUser = async (req, res) => {
           "INSERT INTO users (username, password) VALUES ($1, $2) RETURNING username, password";
 
         const resultsQuery = await db.query(registerQuery, [
-          username,
+          usernameTrim,
           hashedPassword,
         ]);
 
