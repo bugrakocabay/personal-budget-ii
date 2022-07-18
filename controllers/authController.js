@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const passport = require("passport");
 const { db } = require("../db/db");
+const catchAsync = require("../config/catchAsync");
 
 exports.loginUser = passport.authenticate("local", {
   successRedirect: "/envelopes",
@@ -36,7 +37,7 @@ exports.logoutPage = (req, res) => {
   });
 };
 
-exports.registerUser = async (req, res) => {
+exports.registerUser = catchAsync(async (req, res, next) => {
   let { username, password, password2 } = req.body;
   let usernameTrim = username.replace(/\s+/g, "");
   let passwordTrim = password.replace(/\s+/g, "");
@@ -44,46 +45,44 @@ exports.registerUser = async (req, res) => {
 
   let errors = [];
 
-  try {
-    if (!usernameTrim || !passwordTrim || !password2Trim) {
-      errors.push({ messsage: "Lütfen tüm boşlukları doldurun" });
-    }
+  if (!usernameTrim || !passwordTrim || !password2Trim) {
+    errors.push({ messsage: "Lütfen tüm boşlukları doldurun" });
+  }
 
-    if (passwordTrim.length < 6) {
-      errors.push({ messsage: "Şifre 6 karakterden fazla olmalı" });
-    }
+  if (passwordTrim.length < 6) {
+    errors.push({ messsage: "Şifre 6 karakterden fazla olmalı" });
+  }
 
-    if (passwordTrim != password2Trim) {
-      errors.push({ messsage: "Şifreler uyuşmuyor" });
-    }
+  if (passwordTrim != password2Trim) {
+    errors.push({ messsage: "Şifreler uyuşmuyor" });
+  }
 
-    if (errors.length > 0) {
+  if (errors.length > 0) {
+    res.render("register", { errors });
+  } else {
+    let hashedPassword = await bcrypt.hash(passwordTrim, 10);
+    let query = "SELECT * FROM users WHERE username = $1";
+
+    const results = await db.query(query, [usernameTrim]);
+
+    if (results.rows.length > 0) {
+      errors.push({ message: "Kullanıcı adı kullanımda" });
       res.render("register", { errors });
     } else {
-      let hashedPassword = await bcrypt.hash(passwordTrim, 10);
-      let query = "SELECT * FROM users WHERE username = $1";
+      const registerQuery =
+        "INSERT INTO users (username, password) VALUES ($1, $2) RETURNING username, password";
 
-      const results = await db.query(query, [usernameTrim]);
+      const resultsQuery = await db.query(registerQuery, [
+        usernameTrim,
+        hashedPassword,
+      ]);
 
-      if (results.rows.length > 0) {
-        errors.push({ message: "Kullanıcı adı kullanımda" });
-        res.render("register", { errors });
-      } else {
-        const registerQuery =
-          "INSERT INTO users (username, password) VALUES ($1, $2) RETURNING username, password";
-
-        const resultsQuery = await db.query(registerQuery, [
-          usernameTrim,
-          hashedPassword,
-        ]);
-
-        console.log(resultsQuery.rows);
-        req.flash("success_msg", "Kayıt başarılı! Lütfen giriş yap");
-        res.redirect("/user/login");
-      }
+      console.log(resultsQuery.rows);
+      req.flash("success_msg", "Kayıt başarılı! Lütfen giriş yap");
+      res.redirect("/user/login");
     }
-  } catch (error) {}
-};
+  }
+});
 
 exports.checkAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {

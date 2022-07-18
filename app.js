@@ -2,6 +2,8 @@ const express = require("express");
 const envRouter = require("./routes/envelopeRouter");
 const transactionRouter = require("./routes/transactionRouter");
 const authRouter = require("./routes/authRouter");
+const errorController = require("./controllers/errorController");
+const AppError = require("./config/appError");
 const path = require("path");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
@@ -50,6 +52,10 @@ app.get("/", (req, res) => res.redirect("/user/login"));
 app.use("/user", authRouter);
 app.use("/envelopes", envRouter);
 app.use("/transactions", transactionRouter);
+app.all("*", (req, res, next) => {
+  next(new AppError(`${req.originalUrl} bu sunucuda bulunmuyor :S`, 404));
+});
+app.use(errorController);
 
 /// **** SERVER ****
 const port = process.env.PORT || 4000;
