@@ -3,7 +3,7 @@ const catchAsync = require("../config/catchAsync");
 
 exports.getAllEnvs = catchAsync(async (request, response, next) => {
   const query =
-    "SELECT name, budget FROM envelopes WHERE userid = $1 ORDER BY id ASC;";
+    "SELECT id, name, budget FROM envelopes WHERE userid = $1 ORDER BY id ASC;";
   const userid = request.user.id;
 
   const envelopes = await db.query(query, [userid]);
