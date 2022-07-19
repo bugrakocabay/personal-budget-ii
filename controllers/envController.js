@@ -2,9 +2,11 @@ const { db } = require("../db/db");
 const catchAsync = require("../config/catchAsync");
 
 exports.getAllEnvs = catchAsync(async (request, response, next) => {
-  const query = "SELECT * FROM envelopes ORDER BY id ASC;";
+  const query =
+    "SELECT name, budget FROM envelopes WHERE userid = $1 ORDER BY id ASC;";
+  const userid = request.user.id;
 
-  const envelopes = await db.query(query);
+  const envelopes = await db.query(query, [userid]);
   response.status(200).render("main", {
     status: "success",
     message: "retrieved envelope",
@@ -14,10 +16,10 @@ exports.getAllEnvs = catchAsync(async (request, response, next) => {
 
 exports.createEnv = catchAsync(async (request, response, next) => {
   const query =
-    "INSERT INTO envelopes (name, budget) VALUES ($1, $2) RETURNING *;";
+    "INSERT INTO envelopes (name, budget, userid) VALUES ($1, $2, $3) RETURNING *;";
   const { name, budget } = request.body;
-
-  const envelope = await db.query(query, [name, budget]);
+  const userid = request.user.id;
+  const envelope = await db.query(query, [name, budget, userid]);
   response.redirect("/envelopes");
 });
 

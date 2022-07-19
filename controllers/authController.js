@@ -39,7 +39,7 @@ exports.logoutPage = (req, res) => {
 
 exports.registerUser = catchAsync(async (req, res, next) => {
   let { username, password, password2 } = req.body;
-  let usernameTrim = username.replace(/\s+/g, "");
+  let usernameTrim = username.replace(/\s+/g, "").toLowerCase();
   let passwordTrim = password.replace(/\s+/g, "");
   let password2Trim = password2.replace(/\s+/g, "");
 
@@ -77,7 +77,6 @@ exports.registerUser = catchAsync(async (req, res, next) => {
         hashedPassword,
       ]);
 
-      console.log(resultsQuery.rows);
       req.flash("success_msg", "Kayıt başarılı! Lütfen giriş yap");
       res.redirect("/user/login");
     }
