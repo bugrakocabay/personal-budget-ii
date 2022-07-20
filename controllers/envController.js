@@ -1,5 +1,6 @@
 const { db } = require("../db/db");
 const catchAsync = require("../config/catchAsync");
+const AppError = require("../config/appError");
 
 exports.getAllEnvs = catchAsync(async (request, response, next) => {
   const query =
@@ -40,11 +41,15 @@ exports.readTransactionPage = catchAsync(async (req, res) => {
 });
 
 exports.getEnv = catchAsync(async (request, response, next) => {
-  const query = "SELECT * FROM envelopes WHERE id = $1";
-  const transQuery = "SELECT * FROM transactions WHERE envelope_id = $1";
+  const query = "SELECT * FROM envelopes WHERE id = $1 and userid = $2 ";
   const id = parseInt(request.params.id);
+  const userid = request.user.id;
+  const transQuery = "SELECT * FROM transactions WHERE envelope_id = $1";
+  const envelope = await db.query(query, [id, userid]);
 
-  const envelope = await db.query(query, [id]);
+  if (envelope.rows < 1) {
+    return next(new AppError("Olmaz baba", 404));
+  }
   const transactions = await db.query(transQuery, [id]);
   response.status(200).render("envelope", {
     status: "success",
@@ -72,15 +77,20 @@ exports.getEnvelopeTransactions = catchAsync(async (req, res, next) => {
 });
 
 exports.updatePage = catchAsync(async (req, res, next) => {
-  const query = "SELECT * FROM envelopes WHERE id = $1";
+  const query = "SELECT * FROM envelopes WHERE id = $1 AND userid = $2";
   const id = parseInt(req.params.id);
-
-  const envelope = await db.query(query, [id]);
+  const userid = req.user.id;
+  const envelope = await db.query(query, [id, userid]);
+  if (envelope.rows < 1) {
+    return next(new AppError("Olmaz baba", 404));
+  }
   res.status(200).render("edit", {
     status: "success",
     message: "retrieved envelope",
     data: envelope.rows[0],
   });
+
+  return next(new AppError("Olmaz baba", 404));
 });
 
 exports.updateEnv = catchAsync(async (request, response, next) => {
