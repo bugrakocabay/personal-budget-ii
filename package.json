@@ -12,6 +12,7 @@
     "bcrypt": "^5.0.1",
     "bootstrap": "^3.4.1",
     "connect-pg-simple": "^7.0.0",
+    "cors": "^2.8.5",
     "ejs": "^3.1.8",
     "express": "^4.18.1",
     "express-flash": "0.0.2",

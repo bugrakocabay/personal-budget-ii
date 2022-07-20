@@ -14,12 +14,14 @@ const passport = require("passport");
 const initializePassport = require("./config/passport");
 const { db } = require("./db/db");
 const pgSession = require("connect-pg-simple")(session);
+const cors = require("cors");
 
 /// **** MIDDLEWARES ****
 initializePassport(passport);
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(flash());
+app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static(__dirname));
 app.use(express.urlencoded({ extended: true }));
@@ -37,7 +39,7 @@ app.use(
     secret: "asdfqwerty",
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 1000 * 60 * 60 * 24 },
+    cookie: { maxAge: 1000 * 60 * 60 * 24, httpOnly: true, secure: true },
   })
 );
 

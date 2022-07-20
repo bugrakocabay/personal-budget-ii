@@ -89,8 +89,6 @@ exports.updatePage = catchAsync(async (req, res, next) => {
     message: "retrieved envelope",
     data: envelope.rows[0],
   });
-
-  return next(new AppError("Olmaz baba", 404));
 });
 
 exports.updateEnv = catchAsync(async (request, response, next) => {
