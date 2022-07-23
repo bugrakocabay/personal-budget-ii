@@ -1,6 +1,7 @@
 const { db } = require("../db/db");
 const catchAsync = require("../config/catchAsync");
 const AppError = require("../config/appError");
+const { body, validationResult } = require("express-validator");
 
 exports.getAllEnvs = catchAsync(async (request, response, next) => {
   const query =
@@ -19,7 +20,13 @@ exports.createEnv = catchAsync(async (request, response, next) => {
   const query =
     "INSERT INTO envelopes (name, budget, userid) VALUES ($1, $2, $3) RETURNING *;";
   const { name, budget } = request.body;
+  body(name).isLength({ min: 5 });
+  console.log(name);
   const userid = request.user.id;
+  const errors = validationResult(request);
+  if (!errors.isEmpty()) {
+    return response.status(400).json({ errors: errors.array() });
+  }
   const envelope = await db.query(query, [name, budget, userid]);
   response.redirect("/envelopes");
 });
