@@ -17,7 +17,7 @@
       integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
       crossorigin="anonymous"
     ></script>
-    <title>Harcama oluştur</title>
+    <title>Budget</title>
   </head>
   <body>
     <div id="myDIV" class="header">
@@ -25,13 +25,13 @@
     </div>
     <div class="container">
       <div class="header1">
-        <h3>Harcama Ekle</h2>
+        <h3>Add Spending</h2>
       </div>
       <div class="tableddiv">
         <form action="/envelopes/<%= data.id%>/transactions" method="post">
-          <label for="name">Harcama ismi:</label><br />
+          <label for="name">Spending Name:</label><br />
           <input type="text" id="title" name="title" /><br />
-          <label for="budget">Harcama miktarı:</label><br />
+          <label for="budget">Spending Amount:</label><br />
           <input type="text" id="amount" name="amount" />
           <button type="submit" class="btn btn--primary btn--inside uppercase">
             Send

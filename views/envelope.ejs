@@ -17,7 +17,7 @@
       integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
       crossorigin="anonymous"
     ></script>
-    <title>Bütçe</title>
+    <title>Budget</title>
   </head>
   <body>
     <div id="myDIV" class="header">
@@ -39,7 +39,7 @@
     <div class="transactiontable">
       <table style="margin: auto">
         <tbody>
-          <h3 class="harcamalar">Harcamalar <span><a href="/envelopes/<%= data.id%>/transactions"><img class="plus" src="../assets/images/plus.png" alt=""></a></span></h5>
+          <h3 class="harcamalar">Spendings <span><a href="/envelopes/<%= data.id%>/transactions"><img class="plus" src="../assets/images/plus.png" alt=""></a></span></h5>
             
           <% if(transdata.length){ for(var i = 0; i< transdata.length; i++) {%>
           <tr>
@@ -48,7 +48,7 @@
           </tr>
           <% } }else{ %>
           <tr>
-            <td colspan="3">Harcama yok</td>
+            <td colspan="3">No Spending</td>
           </tr>
           <% } %>
         </tbody>

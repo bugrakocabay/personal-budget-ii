@@ -11,11 +11,11 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-    <title>Document</title>
+    <title>Budget</title>
   </head>
   <body>
     <div class="container" {text-align: center;}>
-      <h1>Kayıt Ol</h1>
+      <h1>Register</h1>
 
       <ul>
         <% if(typeof errors != 'undefined') { errors.forEach(error=> {%>
@@ -29,7 +29,7 @@
             type="text"
             name="username"
             id="username"
-            placeholder="Kullanıcı Adı"
+            placeholder="Username"
             required
           />
         </div>
@@ -39,7 +39,7 @@
             type="password"
             name="password"
             id="password"
-            placeholder="Şifre"
+            placeholder="Password"
             required
           />
         </div>
@@ -48,14 +48,14 @@
             type="password"
             name="password2"
             id="password2"
-            placeholder="Şifre Tekrar"
+            placeholder="Password again"
             required
           />
         </div>
         <div>
           <input type="submit" value="Kayıt" />
         </div>
-        <a href="/user/login">Hesabın var mı? Buradan giriş yap</a>
+        <a href="/user/login">Have an account? Log in here!</a>
       </form>
     </div>
   </body>
