@@ -1,4 +1,5 @@
-# Personal Budget App
+![enter image description here](https://github.com/bugrakocabay/personal-budget-ii/blob/main/images/Personal%20Budget%20App.png?raw=true)
+
 This app is one of the portfolio projects in **Codecademy's Backend Engineer Path**. The main idea behind this project can be considered as envelope budgeting, which is a system involves assigning spending categories to different individual envelopes. Each one is allotted a certain amount of cash, which is then used to cover spending for that category.
 
 # Technologies used for this project
